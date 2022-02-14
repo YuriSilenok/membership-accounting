@@ -9,10 +9,11 @@ from kivyauth.google_auth import initialize_google
 from screens.welcome import Welcome
 from screens.clients import Clients
 
-ANDROID_GOOGLE_CLIENT_ID = '.apps.googleusercontent.com'
+ANDROID_GOOGLE_CLIENT_ID = os.getenv('ANDROID_GOOGLE_CLIENT_ID')
 
-WEB_GOOGLE_CLIENT_ID = '.apps.googleusercontent.com'
-WEB_GOOGLE_CLIENT_SECRET = ''
+WEB_GOOGLE_CLIENT_ID = os.getenv('WEB_GOOGLE_CLIENT_ID')
+WEB_GOOGLE_CLIENT_SECRET = os.getenv('WEB_GOOGLE_CLIENT_SECRET')
+
 
 class MembershipAccounting(App):
 
