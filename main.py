@@ -9,16 +9,16 @@ from kivyauth.google_auth import initialize_google
 from screens.welcome import Welcome
 from screens.clients import Clients
 
-# GOOGLE_CLIENT_ID = '.apps.googleusercontent.com'
+ANDROID_GOOGLE_CLIENT_ID = '.apps.googleusercontent.com'
 
-GOOGLE_CLIENT_ID = '.apps.googleusercontent.com'
-GOOGLE_CLIENT_SECRET = ''
+WEB_GOOGLE_CLIENT_ID = '.apps.googleusercontent.com'
+WEB_GOOGLE_CLIENT_SECRET = ''
 
 class MembershipAccounting(App):
 
     def build(self):
         if platform == 'android':
-            initialize_google(self.after_login, self.error_listener)
+            initialize_google(self.after_login, self.error_listener, ANDROID_GOOGLE_CLIENT_ID)
         else:
             initialize_google(
                 self.after_login,
