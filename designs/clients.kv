@@ -1,15 +1,23 @@
 <Clients>:
-
-
     BoxLayout:
         orientation: 'vertical'
-        
+        size: root.width, root.height
+
+        Spinner:
+            id: spinner_id
+            text: "Поиск клиента"
+            values: ["1", "2", "3"]
+            on_text: root.spinner_clicked(spinner_id.text)
+
+        Label:
+            text: ''
+
         Button:
             text: 'Новый клиент'
+
         Button:
-            text: 'Поиск клиента'
-        Button:
-            text: 'Просмотр абонементов клиента'        
+            text: 'Просмотр абонементов клиента'   
+                 
         Button:
             text: 'Выйти'
             on_press: root.logout()
