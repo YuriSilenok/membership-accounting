@@ -1,20 +1,21 @@
 from kivy.uix.screenmanager import Screen, SlideTransition
 from kivyauth.utils import auto_login, login_providers
-from kivyauth.google_auth import initialize_google
+from kivyauth.google_auth import login_google
+from kivy import platform
 
 
 class Welcome(Screen):
 
-    def on_start(self):
-        if auto_login(login_providers.google):
-            self.current_provider = login_providers.google
+    # def on_start(self):
+    #     if auto_login(login_providers.google):
+    #         self.current_provider = login_providers.google
 
     def login(self):
-        initialize_google(self.after_login, self.error_listener)
+        print('login')
+        login_google()
 
     def after_login(self, **qwargs):
-        self.manager.transition = SlideTransition(direction="left")
-        self.manager.current = 'clients'
+        print('after_login')
 
     def error_listener(self, **qwargs):
-        pass
+        print('error_listener')
