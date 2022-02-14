@@ -36,6 +36,12 @@ class MembershipAccounting(App):
 
         return sm
 
+    def after_login(self, **qwargs):
+        print('after_login')
+
+    def error_listener(self, **qwargs):
+        print('error_listener')
+
 
 if __name__ == '__main__':
     MembershipAccounting().run()
