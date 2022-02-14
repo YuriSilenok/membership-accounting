@@ -23,8 +23,8 @@ class MembershipAccounting(App):
             initialize_google(
                 self.after_login,
                 self.error_listener,
-                GOOGLE_CLIENT_ID,
-                GOOGLE_CLIENT_SECRET,
+                WEB_GOOGLE_CLIENT_ID,
+                WEB_GOOGLE_CLIENT_SECRET,
             )
         sm = ScreenManager()
 
