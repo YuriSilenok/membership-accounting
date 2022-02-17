@@ -4,8 +4,10 @@ from kivy.app import App
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager
 
+
 from screens.welcome import Welcome
 from screens.clients import Clients
+from screens.NewClient import NewClient
 
 
 class MembershipAccounting(App):
@@ -18,6 +20,9 @@ class MembershipAccounting(App):
 
         Builder.load_file(os.path.join(os.getcwd(), 'designs', 'clients.kv'))
         sm.add_widget(Clients(name='clients'))
+
+        Builder.load_file(os.path.join(os.getcwd(), 'designs', 'NewClient.kv'))
+        sm.add_widget(NewClient(name='NewClient'))
 
         return sm
 

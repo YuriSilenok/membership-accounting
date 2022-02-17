@@ -1,5 +1,12 @@
 <Clients>:
     BoxLayout:
         Button:
+            text: 'Новый клиент'
+            on_press: root.manager.current = 'NewClient'
+        Button:
+            text: 'Сканировать'
+        TextInput:
+            text: 'Поиск'
+        Button:
             text: 'Выйти'
-            on_press: root.logout()
+            on_press: root.manager.current = 'welcome'

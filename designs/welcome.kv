@@ -2,4 +2,6 @@
     BoxLayout:
         Button:
             text: 'Авторизоваться'
-            on_press: root.login()
+            on_press: root.manager.current = 'clients'
+        TextInput:
+            text: 'Поиск'
