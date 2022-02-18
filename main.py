@@ -21,9 +21,6 @@ class MembershipAccounting(App):
         Builder.load_file(os.path.join(os.getcwd(), 'designs', 'clients.kv'))
         sm.add_widget(Clients(name='clients'))
 
-        Builder.load_file(os.path.join(os.getcwd(), 'designs', 'NewClient.kv'))
-        sm.add_widget(NewClient(name='NewClient'))
-
         return sm
 
 
