@@ -3,18 +3,36 @@ from kivyauth.utils import auto_login, login_providers
 from kivyauth.google_auth import initialize_google
 
 
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
+
 class Welcome(Screen):
+    def login_and_create_folder(self):
 
-    def on_start(self):
-        if auto_login(login_providers.google):
-            self.current_provider = login_providers.google
+        gauth = GoogleAuth()
+        gauth.LocalWebserverAuth()
+    # client_secrets.json need to be in the same directory as the script
+        drive = GoogleDrive(gauth)
 
-    def login(self):
-        initialize_google(self.after_login, self.error_listener)
+        folder_metadata = {
+            'title': 'membership-accounting',
+            # The mimetype defines this new file as a folder, so don't change this.
+            'mimeType': 'application/vnd.google-apps.folder'
+        }
 
-    def after_login(self, **qwargs):
-        self.manager.transition = SlideTransition(direction="left")
-        self.manager.current = 'clients'
+        folder = drive.CreateFile(folder_metadata)
+        folder.Upload()
+        if folder['id']:
+            self.manager.current = 'clients'
+        folder_id = folder['id']
+        emaill = folder['lastModifyingUser']['emailAddress']
+        file5 = drive.CreateFile({'parents': [{'id': f'{folder_id}'}],
+                                  'title': f'{emaill}'})
+        # Read file and set it as a content of this instance.
+        file5.SetContentFile('Sheets.xlsx')
+        file5.Upload()  # Upload the file.
+        print({emaill: file5['id']})
 
-    def error_listener(self, **qwargs):
-        pass
+        return {emaill: file5['id']}
+
+

@@ -1,7 +1,7 @@
 from pprint import pp, pprint
 import httplib2
 import apiclient.discovery
-from googleapiclient.http import MediaFileUpload
+
 from oauth2client.service_account import ServiceAccountCredentials
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
@@ -11,7 +11,7 @@ CREDENTIALS_FILE = 'fileapi.json'  # Имя файла с закрытым кл�
 # Читаем ключи из файла
 credentials = ServiceAccountCredentials.from_json_keyfile_name(CREDENTIALS_FILE,
                                                                [
-                                                                'https://www.googleapis.com/auth/drive'])
+                                                                   'https://www.googleapis.com/auth/drive'])
 
 httpAuth = credentials.authorize(httplib2.Http())  # Авторизуемся в системе
 service = apiclient.discovery.build('sheets', 'v4', http=httpAuth)  # Выбираем работу с таблицами и 4 версию API
@@ -114,19 +114,35 @@ def geting(spreadsheetId):
     ).execute()
     pprint(values)
 
+
 def login_and_create_folder():
     gauth = GoogleAuth()
-    gauth.LocalWebserverAuth()  # client_secrets.json need to be in the same directory as the script
+    gauth.LocalWebserverAuth()
+    print(gauth)  # client_secrets.json need to be in the same directory as the script
     drive = GoogleDrive(gauth)
 
     folder_metadata = {
-        'title': 'New folder',
+        'title': 'membership-accounting',
         # The mimetype defines this new file as a folder, so don't change this.
         'mimeType': 'application/vnd.google-apps.folder'
+
     }
+
     folder = drive.CreateFile(folder_metadata)
     folder.Upload()
-    return folder['id']
+    folder_id = folder['id']
+    pprint(folder)
+    emaill = folder['lastModifyingUser']['emailAddress']
+    file5 = drive.CreateFile({'parents': [{'id': f'{folder_id}'}],
+                              'title': f'{emaill}'})
+    # Read file and set it as a content of this instance.
+    file5.SetContentFile('Sheets.xlsx')
+    file5.Upload()  # Upload the file.
+
+    return {emaill:file5['id']}
+
+
 
 if __name__ == '__main__':
-    login_and_create_folder()
+    print(login_and_create_folder())
+

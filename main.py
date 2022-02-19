@@ -10,6 +10,7 @@ from screens.clients import Clients
 from screens.NewClient import NewClient
 
 
+
 class MembershipAccounting(App):
 
     def build(self):
@@ -17,6 +18,8 @@ class MembershipAccounting(App):
 
         Builder.load_file(os.path.join(os.getcwd(), 'designs', 'welcome.kv'))
         sm.add_widget(Welcome(name='welcome'))
+
+
 
         Builder.load_file(os.path.join(os.getcwd(), 'designs', 'clients.kv'))
         sm.add_widget(Clients(name='clients'))

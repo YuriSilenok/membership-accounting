@@ -2,3 +2,4 @@ buildozer
 Cython
 kivy
 kivyauth
+PyDrive
