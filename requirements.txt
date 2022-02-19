@@ -1,3 +1,4 @@
 buildozer
 Cython
 kivy
+kivyauth

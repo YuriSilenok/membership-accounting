@@ -1,6 +1,8 @@
 branches:
   only:
   - main
+  - dev
+  - /^issue-\d+$/
 language: python
 python:
   - "3.6"
@@ -16,4 +18,14 @@ deploy:
   skip_cleanup: true
   on:
     branch: main
+    tags: false
+deploy:
+  provider: releases
+  prerelease: true
+  api_key: "$GITHUB"
+  file_glob: true
+  file: "bin/*.apk"
+  skip_cleanup: true
+  on:
+    branch: dev
     tags: false

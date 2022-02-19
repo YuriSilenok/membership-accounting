@@ -1,5 +1,6 @@
 import os
 
+from kivy import platform
 from kivy.app import App
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager
