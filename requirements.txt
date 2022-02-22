@@ -3,3 +3,4 @@ Cython
 kivy
 kivyauth
 PyDrive
+gspread
