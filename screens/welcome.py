@@ -8,7 +8,7 @@ from pydrive.drive import GoogleDrive
 
 class Welcome(Screen):
     def login_and_create_folder(self):
-        gauth = GoogleAuth()
+        gauth = GoogleAuth() #Костыль на авторизацию
         gauth.LocalWebserverAuth()
         drive = GoogleDrive(gauth)
 
@@ -36,7 +36,7 @@ class Welcome(Screen):
 
         gs = gspread.service_account(filename='fileapi.json')
         sht = gs.open_by_key(f'{file_id}')
-        worksheet1 = sht.add_worksheet(title="Клиенты", rows="100", cols="20")
+        worksheet1 = sht.add_worksheet(title="Клиенты", rows="200", cols="8")
         worksheet1.update('A1:H1', [["Идентификатор клиента",
                                      "Дата регистации",
                                      "Фамилия",
@@ -45,7 +45,8 @@ class Welcome(Screen):
                                      "Номер телефона",
                                      "Количество абонементов",
                                      "Дата покупки последенго абонемента"]])
-        worksheet2 = sht.add_worksheet(title="Абонементы", rows="100", cols="20")
+
+        worksheet2 = sht.add_worksheet(title="Абонементы", rows="200", cols="7")
         worksheet2.update('A1:G1', [["Идентификатор абонемента",
                                      "Идентификатор клиента",
                                      "Дата создания",
@@ -53,12 +54,19 @@ class Welcome(Screen):
                                      "Количесво занятий",
                                      "Пройденных занятий",
                                      "Дата и время последней тренировки"]])
-        worksheet3 = sht.add_worksheet(title="Тренировки", rows="100", cols="20")
-        worksheet3.update('A1:C3', [["Идентификатор тренировки",
+
+        worksheet3 = sht.add_worksheet(title="Тренировки", rows="200", cols="3")
+        worksheet3.update('A1:C1', [["Идентификатор тренировки",
                                      "Идентификатор абонемента",
                                      "Дата и время тренировки"],
                                     ])
         worksheet = sht.sheet1
         sht.del_worksheet(worksheet)
-        return {emaill: file['id']}
 
+        worksheet1.format('A1:H200', {'wrapStrategy': 'LEGACY_WRAP'})
+        worksheet2.format('A1:G200', {'wrapStrategy': 'LEGACY_WRAP'})
+        worksheet3.format('A1:C200', {'wrapStrategy': 'LEGACY_WRAP'})
+
+
+        print('Код выполнен успешно')
+        return {emaill: file['id']}
