@@ -1,38 +1,64 @@
-from kivy.uix.screenmanager import Screen, SlideTransition
-from kivyauth.utils import auto_login, login_providers
-from kivyauth.google_auth import initialize_google
+import gspread
+from kivy.uix.screenmanager import Screen
 
 
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
+
 class Welcome(Screen):
     def login_and_create_folder(self):
-
         gauth = GoogleAuth()
         gauth.LocalWebserverAuth()
-    # client_secrets.json need to be in the same directory as the script
         drive = GoogleDrive(gauth)
 
         folder_metadata = {
             'title': 'membership-accounting',
-            # The mimetype defines this new file as a folder, so don't change this.
             'mimeType': 'application/vnd.google-apps.folder'
         }
 
         folder = drive.CreateFile(folder_metadata)
         folder.Upload()
-        if folder['id']:
-            self.manager.current = 'clients'
         folder_id = folder['id']
         emaill = folder['lastModifyingUser']['emailAddress']
-        file5 = drive.CreateFile({'parents': [{'id': f'{folder_id}'}],
-                                  'title': f'{emaill}'})
-        # Read file and set it as a content of this instance.
-        file5.SetContentFile('Sheets.xlsx')
-        file5.Upload()  # Upload the file.
-        print({emaill: file5['id']})
+        file = drive.CreateFile({'parents': [{'id': f'{folder_id}'}],
+                                 'title': f'{emaill}',
+                                 'mimeType': 'application/vnd.google-apps.spreadsheet'})
 
-        return {emaill: file5['id']}
+        file.Upload()
+        file_id = file['id']
 
+        permission = file.InsertPermission({
+            'type': 'anyone',
+            'value': 'anyone',
+            'role': 'writer'})
+        print(folder['alternateLink'])
+
+        gs = gspread.service_account(filename='fileapi.json')
+        sht = gs.open_by_key(f'{file_id}')
+        worksheet1 = sht.add_worksheet(title="Клиенты", rows="100", cols="20")
+        worksheet1.update('A1:H1', [["Идентификатор клиента",
+                                     "Дата регистации",
+                                     "Фамилия",
+                                     "Имя",
+                                     "Отчество",
+                                     "Номер телефона",
+                                     "Количество абонементов",
+                                     "Дата покупки последенго абонемента"]])
+        worksheet2 = sht.add_worksheet(title="Абонементы", rows="100", cols="20")
+        worksheet2.update('A1:G1', [["Идентификатор абонемента",
+                                     "Идентификатор клиента",
+                                     "Дата создания",
+                                     "Цена абонемента",
+                                     "Количесво занятий",
+                                     "Пройденных занятий",
+                                     "Дата и время последней тренировки"]])
+        worksheet3 = sht.add_worksheet(title="Тренировки", rows="100", cols="20")
+        worksheet3.update('A1:C3', [["Идентификатор тренировки",
+                                     "Идентификатор абонемента",
+                                     "Дата и время тренировки"],
+                                    ])
+        worksheet = sht.sheet1
+        sht.del_worksheet(worksheet)
+        return {emaill: file['id']}
 
