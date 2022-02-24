@@ -69,4 +69,5 @@ class Welcome(Screen):
 
 
         print('Код выполнен успешно')
+        self.folder_id = ""
         return {emaill: file['id']}
